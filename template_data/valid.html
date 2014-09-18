@@ -1,38 +1,57 @@
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
- <meta charset="UTF-8">
- <title>Valid Certificate Number</title>
- <link rel="stylesheet" href="/stylesheets/base.css">
-</head>
-<body>
-  <header>
-    <h1>edx</h1>
-  </header>
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UPEx - Validación de Certificado</title>
 
-  <section>
-    <header class="valid">
-      <h1>This is a valid edX certificate number for <span>{NAME}</span></h1>
-    </header>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-    <section>
-      <dl>
-        <dt>Student Name</dt>
-        <dd>{NAME}</dd>
-        <dt>Identifier number</dt>
-        <dd>{CERTIFICATE_ID}</dd>
-        <dt>Course</dt>
-        <dd>{COURSE}</dd>
-        <dd class="description">A course of study offered by {ORG}, an online learning initiative of {ORG_LONG}, through edX, the online learning initiative of Harvard University and MIT</dd>
-      </dl>
-    </section>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
 
-  </section>
-  <footer>
-    <p>{SIGNATURE}
-    </p>
-    <a href="{SIG_URL}" class="download">Download this signature</a>
-    <a href="{VERIFY_URL}" class="what">What is this?</a>
-  </footer>
-</body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="http://iaen.edu.ec"><img src="https://www.upex.edu.ec/mailings/logo_iaen-02.png" /></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Este es un certificado válido en UPEx para <span>{NAME}</span></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <dl>
+            <dt>Nombre del estudiante:</dt>
+            <dd>{NAME}</dd>
+            <dt>Identificador:</dt>
+            <dd>{CERTIFICATE_ID}</dd>
+            <dt>Curso</dt>
+            <dd>{COURSE}</dd>
+            <dd class="description">Un curso ofrecido por UPEx, una plataforma MOOC del {ORG}.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <footer>
+        <p>
+        <pre>
+        {SIGNATURE}
+        </pre>
+        </p>
+        <a href="{SIG_URL}" class="download">Descargar esta firma GnuPG</a>
+      </footer>
+
+    </div>
+  </body>
 </html>
