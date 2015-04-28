@@ -445,6 +445,8 @@ class CertificateGen(object):
         styleOpenSansLight.textColor = colors.Color(0.302, 0.306, 0.318)
         styleOpenSansLight.alignment = TA_LEFT
 
+        #Fecha Curso
+
         paragraph_string = ""
 
         # Right justified so we compute the width
@@ -477,22 +479,8 @@ class CertificateGen(object):
         paragraph = Paragraph("<i>{0}</i>".format(
             paragraph_string), styleOpenSansLight)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, (WIDTH - RIGHT_INDENT - width) * mm, 65 * mm)
-
-        # This is to certify..
-
-        styleOpenSansLight.fontSize = 12
-        styleOpenSansLight.leading = 10
-        styleOpenSansLight.textColor = colors.Color(
-            0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_CENTER
-
-        paragraph_string = "Certifica que"
-        paragraph = Paragraph(paragraph_string, styleOpenSansLight)
-        paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        #paragraph.drawOn(c, LEFT_INDENT * mm, 132.5 * mm)
-        paragraph.drawOn(c, 0 * mm, 132.5 * mm)
-
+        paragraph.drawOn(c, 133.30 * mm, 140.0 * mm)
+        
         #  Student name
 
         # default is to use the DejaVu font for the name,
@@ -500,110 +488,50 @@ class CertificateGen(object):
         # unusual characters
         style = styleOpenSans
         style.leading = 10
-        width = stringWidth(student_name.decode('utf-8'), 'OpenSans-Bold', 34) / mm
+        width = stringWidth(student_name.decode('utf-8'), 'OpenSans-Bold', 18) / mm
         paragraph_string = "<b>{0}</b>".format(student_name)
 
         if self._use_unicode_font(student_name):
             style = styleArial
-            width = stringWidth(student_name.decode('utf-8'), 'Arial Unicode', 34) / mm
+            style = styleMiso
+            width = stringWidth(student_name.decode('utf-8'), 'Arial-Bold', 18) / mm
             # There is no bold styling for Arial :(
             paragraph_string = "{0}".format(student_name)
 
         # We will wrap at 200mm in, so if we reach the end (200-47)
         # decrease the font size
         if width > 153:
-            style.fontSize = 18
-            nameYOffset = 121.5
+            style.fontSize = 25
+            nameYOffset = 109.5
         else:
-            style.fontSize = 34
-            nameYOffset = 124.5
+            style.fontSize = 25
+            nameYOffset = 109.5
 
-        style.textColor = colors.Color(
-            0, 0.624, 0.886)
-        style.alignment = TA_CENTER
+        style.textColor = colors.HexColor('#e9212d')
+        #style.textColor = colors.Color(
+        #    0,0.128,.128 )
+        style.alignment = TA_LEFT
 
         paragraph = Paragraph(paragraph_string, style)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 0 * mm, nameYOffset * mm)
-
-
-
-        # Successfully completed
-
-        styleOpenSansLight.fontSize = 12
-        styleOpenSansLight.leading = 10
-        styleOpenSansLight.textColor = colors.Color(
-            0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_CENTER
-
-        paragraph_string = "Aprobó el curso"
-        if '7.00x' in self.course:
-            paragraph_string = "successfully completed the inaugural offering of"
-        else:
-            paragraph_string = "Aprobó el curso"
-
-        paragraph = Paragraph(paragraph_string, styleOpenSansLight)
-
-        paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 0 * mm, 108 * mm)
+        paragraph.drawOn(c, 133.30 * mm, nameYOffset * mm)
 
         # Course name
 
         # styleOpenSans.fontName = 'OpenSans-BoldItalic'
-        if 'PH207x' in self.course:
-            styleOpenSans.fontSize = 18
-            styleOpenSans.leading = 21
-        elif '4.01x' in self.course:
-            styleOpenSans.fontSize = 20
-            styleOpenSans.leading = 10
-        elif 'Stat2.1x' in self.course:
-            styleOpenSans.fontSize = 20
-            styleOpenSans.leading = 10
-        elif 'CS191x' in self.course:
-            styleOpenSans.fontSize = 20
-            styleOpenSans.leading = 10
-        elif '6.00x' in self.course:
-            styleOpenSans.fontSize = 20
-            styleOpenSans.leading = 21
-        elif 'PH278x' in self.course:
-            styleOpenSans.fontSize = 20
-            styleOpenSans.leading = 10
-        else:
-            styleOpenSans.fontSize = 24
-            styleOpenSans.leading = 10
-        styleOpenSans.textColor = colors.Color(
-            0, 0.624, 0.886)
-        styleOpenSans.alignment = TA_CENTER
+        styleOpenSans.fontSize = 20
+        styleOpenSans.leading = 10
+        #styleOpenSans.textColor = colors.Color(
+        #    0, 0.624, 0.886)
+        styleOpenSans.textColor = colors.HexColor('#000000')
+        styleOpenSans.alignment = TA_LEFT
 
-        paragraph_string = u"<b><i>{0}: {1}</i></b>".format(
+        paragraph_string = u"<b><i>{1}</i></b>".format(
             self.course, self.long_course.decode('utf-8'))
         paragraph = Paragraph(paragraph_string, styleOpenSans)
         # paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        if 'PH207x' in self.course:
-            paragraph.wrapOn(c, 180 * mm, HEIGHT * mm)
-            paragraph.drawOn(c, LEFT_INDENT * mm, 91 * mm)
-        elif '6.00x' in self.course:
-            paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-            paragraph.drawOn(c, LEFT_INDENT * mm, 95 * mm)
-        else:
-            paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-            paragraph.drawOn(c, 0 * mm, 99 * mm)
-
-        # A course of study..
-
-        styleOpenSansLight.fontSize = 12
-        styleOpenSansLight.textColor = colors.Color(
-            0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_CENTER
-
-
-        paragraph_string = "De 40 horas de duración, llevado a cabo de 2014-08-14 al 2014-09-12, luego de cumplir con los requisitos académicos<br/><br/>" \
-                           "establecidos por el IAEN en su estatuto y demás normas internas.".format(
-                               self.org, self.long_org)
-
-        paragraph = Paragraph(paragraph_string, styleOpenSansLight)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 0 * mm, 78 * mm)
+        paragraph.drawOn(c, 133.50 * mm, 84.30 * mm)
 
         # Honor code
 
@@ -625,7 +553,7 @@ class CertificateGen(object):
         paragraph = Paragraph(paragraph_string, styleOpenSansLight)
 
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 0 * mm, 28 * mm)
+        paragraph.drawOn(c, 0 * mm, 8 * mm)
 
         c.showPage()
         c.save()
@@ -1879,30 +1807,6 @@ class CertificateGen(object):
 
         paragraph.drawOn(PAGE, GUTTER_WIDTH, yOffset)
 
-        # SECTION: Extra achievements
-        achievements_string = ""
-        achievements_description_string = self.interstitial_texts[grade]
-        if grade and grade.lower() != 'pass':
-            achievements_string = "with <b>{0}</b>.<br /><br />".format(grade)
-        achievements_paragraph = u"{0}{1}".format(achievements_string, achievements_description_string)
-
-        (fonttag, fontfile, achievements_style) = font_for_string(
-            fontlist_with_style(style_standard_text),
-            achievements_paragraph,
-        )
-
-        max_height = achievements_style.leading * 9  # allow for up to 9 lines of text
-        max_width = MAX_GEN_WIDTH
-        minYOffset = 135  # distance from bottom of page (in points)
-
-        paragraph = Paragraph(achievements_paragraph, achievements_style)
-        width, height = paragraph.wrapOn(PAGE, max_width, max_height)
-
-        yOffset = minYOffset + (max_height - height)
-
-        paragraph.drawOn(PAGE, GUTTER_WIDTH, yOffset)
-
-        # SECTION: disclaimer text
         print_disclaimer = not self.cert_data.get('HAS_DISCLAIMER', False)
         disclaimer_text = getattr(settings, 'CERTS_SITE_DISCLAIMER_TEXT', '')
         if print_disclaimer and disclaimer_text:
@@ -1943,7 +1847,7 @@ class CertificateGen(object):
 
             paragraph = Paragraph(paragraph_string, honor_style)
             paragraph.wrapOn(PAGE, max_width, max_height)
-            paragraph.drawOn(PAGE, GUTTER_WIDTH, 70)
+            paragraph.drawOn(PAGE, GUTTER_WIDTH, 10)
 
         # Render Page
         PAGE.showPage()
