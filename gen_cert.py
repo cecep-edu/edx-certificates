@@ -445,7 +445,7 @@ class CertificateGen(object):
         styleOpenSansLight.textColor = colors.Color(0.302, 0.306, 0.318)
         styleOpenSansLight.alignment = TA_LEFT
 
-        paragraph_string = "CERTIFICATE"
+        paragraph_string = ""
 
         # Right justified so we compute the width
         width = stringWidth(
@@ -466,7 +466,7 @@ class CertificateGen(object):
             0.302, 0.306, 0.318)
         styleOpenSansLight.alignment = TA_LEFT
 
-        paragraph_string = "Issued {0}".format(self.issued_date)
+        paragraph_string = "{0}".format(self.issued_date)
 
         # Right justified so we compute the width
         width = stringWidth(
@@ -477,7 +477,7 @@ class CertificateGen(object):
         paragraph = Paragraph("<i>{0}</i>".format(
             paragraph_string), styleOpenSansLight)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, (WIDTH - RIGHT_INDENT - width) * mm, 155 * mm)
+        paragraph.drawOn(c, (WIDTH - RIGHT_INDENT - width) * mm, 65 * mm)
 
         # This is to certify..
 
@@ -485,12 +485,13 @@ class CertificateGen(object):
         styleOpenSansLight.leading = 10
         styleOpenSansLight.textColor = colors.Color(
             0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_LEFT
+        styleOpenSansLight.alignment = TA_CENTER
 
-        paragraph_string = "This is to certify that"
+        paragraph_string = "Certifica que"
         paragraph = Paragraph(paragraph_string, styleOpenSansLight)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, LEFT_INDENT * mm, 132.5 * mm)
+        #paragraph.drawOn(c, LEFT_INDENT * mm, 132.5 * mm)
+        paragraph.drawOn(c, 0 * mm, 132.5 * mm)
 
         #  Student name
 
@@ -519,11 +520,13 @@ class CertificateGen(object):
 
         style.textColor = colors.Color(
             0, 0.624, 0.886)
-        style.alignment = TA_LEFT
+        style.alignment = TA_CENTER
 
         paragraph = Paragraph(paragraph_string, style)
-        paragraph.wrapOn(c, 200 * mm, 214 * mm)
-        paragraph.drawOn(c, LEFT_INDENT * mm, nameYOffset * mm)
+        paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
+        paragraph.drawOn(c, 0 * mm, nameYOffset * mm)
+
+
 
         # Successfully completed
 
@@ -531,18 +534,18 @@ class CertificateGen(object):
         styleOpenSansLight.leading = 10
         styleOpenSansLight.textColor = colors.Color(
             0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_LEFT
+        styleOpenSansLight.alignment = TA_CENTER
 
-        paragraph_string = "successfully completed"
+        paragraph_string = "Aprobó el curso"
         if '7.00x' in self.course:
             paragraph_string = "successfully completed the inaugural offering of"
         else:
-            paragraph_string = "successfully completed"
+            paragraph_string = "Aprobó el curso"
 
         paragraph = Paragraph(paragraph_string, styleOpenSansLight)
 
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, LEFT_INDENT * mm, 108 * mm)
+        paragraph.drawOn(c, 0 * mm, 108 * mm)
 
         # Course name
 
@@ -570,7 +573,7 @@ class CertificateGen(object):
             styleOpenSans.leading = 10
         styleOpenSans.textColor = colors.Color(
             0, 0.624, 0.886)
-        styleOpenSans.alignment = TA_LEFT
+        styleOpenSans.alignment = TA_CENTER
 
         paragraph_string = u"<b><i>{0}: {1}</i></b>".format(
             self.course, self.long_course.decode('utf-8'))
@@ -584,23 +587,23 @@ class CertificateGen(object):
             paragraph.drawOn(c, LEFT_INDENT * mm, 95 * mm)
         else:
             paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-            paragraph.drawOn(c, LEFT_INDENT * mm, 99 * mm)
+            paragraph.drawOn(c, 0 * mm, 99 * mm)
 
         # A course of study..
 
         styleOpenSansLight.fontSize = 12
         styleOpenSansLight.textColor = colors.Color(
             0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_LEFT
+        styleOpenSansLight.alignment = TA_CENTER
 
-        paragraph_string = "a course of study offered by <b>{0}</b>" \
-                           ", an online learning<br /><br />initiative of " \
-                           "<b>{1}</b> through <b>edX</b>.".format(
-                               self.org, self.long_org.decode('utf-8'))
+
+        paragraph_string = "De 40 horas de duración, llevado a cabo de 2014-08-14 al 2014-09-12, luego de cumplir con los requisitos académicos<br/><br/>" \
+                           "establecidos por el IAEN en su estatuto y demás normas internas.".format(
+                               self.org, self.long_org)
 
         paragraph = Paragraph(paragraph_string, styleOpenSansLight)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, LEFT_INDENT * mm, 78 * mm)
+        paragraph.drawOn(c, 0 * mm, 78 * mm)
 
         # Honor code
 
@@ -610,8 +613,8 @@ class CertificateGen(object):
             0.302, 0.306, 0.318)
         styleOpenSansLight.alignment = TA_CENTER
 
-        paragraph_string = "HONOR CODE CERTIFICATE<br/>" \
-            "*Authenticity of this certificate can be verified at " \
+        paragraph_string = "<br/>" \
+            "*La Autenticidad de este certificado puede ser verificado en " \
             "<a href='{verify_url}/{verify_path}/{verify_uuid}'>" \
             "{verify_url}/{verify_path}/{verify_uuid}</a>"
 
@@ -899,7 +902,7 @@ class CertificateGen(object):
         # ELEM: Footer - Issued on Date
         x_offset = pos_footer_date_x
         y_offset = pos_footer_date_y
-        paragraph_string = "Issued {0}".format(self.issued_date)
+        paragraph_string = "{0}".format(self.issued_date)
         # Right justified so we compute the width
         paragraph = Paragraph("{0}".format(
             paragraph_string), styleAvenirFooter)

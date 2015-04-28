@@ -55,10 +55,10 @@ CERT_FILENAME = 'Certificate.pdf'
 # Specify these credentials before running the test suite
 # or ensure that your .boto file has write permission
 # to the bucket.
-CERT_AWS_ID = None
-CERT_AWS_KEY = None
+CERT_AWS_ID = 'AKIAIXICH5AOJPE3BK5A'
+CERT_AWS_KEY = 'qdETwaKglkwG0a01p/775pp5JRoX/DIwMhWhXgvl'
 # Update this with your bucket name
-CERT_BUCKET = 'verify-test.edx.org'
+CERT_BUCKET = 'certsupex'
 CERT_WEB_ROOT = '/var/tmp'
 # when set to true this will copy the generated certificate
 # to the CERT_WEB_ROOT. This is not something you want to do
