@@ -507,7 +507,7 @@ class CertificateGen(object):
             style.fontSize = 25
             nameYOffset = 109.5
 
-        style.textColor = colors.HexColor('#e9212d')
+        style.textColor = colors.HexColor('#1aa0e0')
         #style.textColor = colors.Color(
         #    0,0.128,.128 )
         style.alignment = TA_LEFT
@@ -519,11 +519,11 @@ class CertificateGen(object):
         # Course name
 
         # styleOpenSans.fontName = 'OpenSans-BoldItalic'
-        styleOpenSans.fontSize = 20
+        styleOpenSans.fontSize = 17
         styleOpenSans.leading = 10
         #styleOpenSans.textColor = colors.Color(
         #    0, 0.624, 0.886)
-        styleOpenSans.textColor = colors.HexColor('#000000')
+        styleOpenSans.textColor = colors.HexColor('#5d5e5e')
         styleOpenSans.alignment = TA_LEFT
 
         paragraph_string = u"<b><i>{1}</i></b>".format(
@@ -531,7 +531,7 @@ class CertificateGen(object):
         paragraph = Paragraph(paragraph_string, styleOpenSans)
         # paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 133.50 * mm, 84.30 * mm)
+        paragraph.drawOn(c, 133.50 * mm, 82.80 * mm)
 
         # Honor code
 
