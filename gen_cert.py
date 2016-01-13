@@ -24,6 +24,8 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from glob import glob
 from HTMLParser import HTMLParser
+from reportlab.pdfbase.ttfonts import TTFont
+
 
 import settings
 import collections
@@ -36,6 +38,7 @@ from boto.s3.key import Key
 from bidi.algorithm import get_display
 import arabic_reshaper
 
+from opaque_keys.edx.keys import CourseKey
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
@@ -77,6 +80,7 @@ BLANK_PDFS = {
     'landscape-letter': PdfFileReader(file("{0}/blank-letter.pdf".format(TEMPLATE_DIR), "rb")),
     'portrait-A4': PdfFileReader(file("{0}/blank-portrait-A4.pdf".format(TEMPLATE_DIR), "rb")),
 }
+
 
 
 def prettify_isodate(isoformat_date):
@@ -189,7 +193,7 @@ class CertificateGen(object):
 
         Multiple certificates can be generated and uploaded for a single course.
 
-        course_id    - Full course_id (ex: MITx/6.00x/2012_Fall)
+        course_id    - Full course_id (ex: course-v1:MITx+6.00x+1T2015)
         course_name  - Human readable course title (ex: Introduction to Curling)
         dir_prefix   - Temporary directory for file generation. Ceritificates
                        and signatures are copied here temporarily before they
@@ -208,6 +212,7 @@ class CertificateGen(object):
                            template_pdf parameter
         """
         if dir_prefix is None:
+            self._ensure_dir(TMP_GEN_DIR)
             dir_prefix = tempfile.mkdtemp(prefix=TMP_GEN_DIR)
         self._ensure_dir(dir_prefix)
         self.dir_prefix = dir_prefix
@@ -233,12 +238,11 @@ class CertificateGen(object):
             log.critical("Unable to lookup long names for course {0}".format(course_id))
             raise
 
-        # split the org and course from the course_id
-        # if COURSE or ORG is set in the configuration
-        # dictionary, use that instead
-        tmp_org, tmp_course, tmp_run = course_id.split('/')
-        self.course = cert_data.get('COURSE', tmp_course)
-        self.org = cert_data.get('ORG', tmp_org)
+        # if COURSE or ORG is set in the configuration attempt to parse.
+        # This supports both new and old style course keys.
+        course_key = CourseKey.from_string(course_id)
+        self.course = cert_data.get('COURSE', course_key.course)
+        self.org = cert_data.get('ORG', course_key.org)
 
         # get the template version based on the course settings in the
         # certificates repo, with sensible defaults so that we can generate
@@ -411,6 +415,16 @@ class CertificateGen(object):
         # 0 1 - italic
         # 1 0 - bold
         # 1 1 - italic and bold
+        pdfmetrics.registerFont(TTFont('Roboto', './fonts/roboto/Roboto-Regular.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto-Thin', './fonts/roboto/Roboto-Thin.ttf'))
+        addMapping('Roboto', 0, 0, 'Roboto')
+        addMapping('Roboto', 0, 1, 'Roboto')
+        addMapping('Roboto', 1, 0, 'Roboto')
+
+        addMapping('Roboto-Thin', 0, 0, 'Roboto-Thin')
+        addMapping('Roboto-Thin', 0, 1, 'Roboto-Thin')
+        addMapping('Roboto-Thin', 1, 0, 'Roboto-Thin')
+
         addMapping('OpenSans-Light', 0, 0, 'OpenSans-Light')
         addMapping('OpenSans-Light', 0, 1, 'OpenSans-LightItalic')
         addMapping('OpenSans-Light', 1, 0, 'OpenSans-Bold')
@@ -423,6 +437,8 @@ class CertificateGen(object):
         styleArial = ParagraphStyle(name="arial", leading=10, fontName='Arial Unicode')
         styleOpenSans = ParagraphStyle(name="opensans-regular", leading=10, fontName='OpenSans-Regular')
         styleOpenSansLight = ParagraphStyle(name="opensans-light", leading=10, fontName='OpenSans-Light')
+        styleRoboto = ParagraphStyle(name="roboto", leading=10, fontName='Roboto')
+        styleRobotoThin = ParagraphStyle(name="roboto-thin", leading=10, fontName='Roboto-Thin')
 
         # Text is overlayed top to bottom
         #   * Issued date (top right corner)
@@ -452,20 +468,19 @@ class CertificateGen(object):
         # Right justified so we compute the width
         width = stringWidth(
             paragraph_string,
-            'OpenSans-Light',
+            'Roboto-Thin',
             19,
         ) / mm
         paragraph = Paragraph("{0}".format(
-            paragraph_string), styleOpenSansLight)
+            paragraph_string), styleRobotoThin)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
         paragraph.drawOn(c, (WIDTH - RIGHT_INDENT - width) * mm, 163 * mm)
 
         # Issued ..
 
-        styleOpenSansLight.fontSize = 12
-        styleOpenSansLight.leading = 10
-        styleOpenSansLight.textColor = colors.Color(
-            0.302, 0.306, 0.318)
+        styleRobotoThin.fontSize = 12
+        styleRobotoThin.leading = 10
+        #styleOpenSansLight.textColor = colors.Color(0.302, 0.306, 0.318)
         styleOpenSansLight.alignment = TA_LEFT
 
         paragraph_string = "{0}".format(self.issued_date)
@@ -473,65 +488,66 @@ class CertificateGen(object):
         # Right justified so we compute the width
         width = stringWidth(
             paragraph_string,
-            'OpenSans-LightItalic',
-            12,
+            'Roboto-Thin',
+            20,
         ) / mm
-        paragraph = Paragraph("<i>{0}</i>".format(
-            paragraph_string), styleOpenSansLight)
+        paragraph = Paragraph("{0}".format(
+            paragraph_string), styleRobotoThin)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 133.30 * mm, 140.0 * mm)
+        paragraph.drawOn(c, 214.30 * mm, 57 * mm)
         
         #  Student name
 
         # default is to use the DejaVu font for the name,
         # will fall back to Arial if there are
         # unusual characters
-        style = styleOpenSans
+        #style = styleOpenSans
+        style = styleRoboto
         style.leading = 10
-        width = stringWidth(student_name.decode('utf-8'), 'OpenSans-Bold', 18) / mm
-        paragraph_string = "<b>{0}</b>".format(student_name)
+        width = stringWidth(student_name.decode('utf-8'), 'Roboto', 14) / mm
+        paragraph_string = "{0}".format(student_name)
 
         if self._use_unicode_font(student_name):
             style = styleArial
             style = styleMiso
-            width = stringWidth(student_name.decode('utf-8'), 'Arial-Bold', 18) / mm
+            width = stringWidth(student_name.decode('utf-8'), 'Roboto', 14) / mm
             # There is no bold styling for Arial :(
-            paragraph_string = "{0}".format(student_name)
+            paragraph_string = "<b>{0}</b>".format(student_name)
 
         # We will wrap at 200mm in, so if we reach the end (200-47)
         # decrease the font size
         if width > 153:
-            style.fontSize = 25
-            nameYOffset = 109.5
+            style.fontSize = 18
+            nameYOffset = 121.55
         else:
-            style.fontSize = 25
-            nameYOffset = 109.5
+            style.fontSize = 18
+            nameYOffset = 121.55
 
-        style.textColor = colors.HexColor('#1aa0e0')
+        style.textColor = colors.HexColor('#000000')
         #style.textColor = colors.Color(
         #    0,0.128,.128 )
-        style.alignment = TA_LEFT
+        style.alignment = TA_CENTER
 
         paragraph = Paragraph(paragraph_string, style)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 133.30 * mm, nameYOffset * mm)
+        paragraph.drawOn(c, 0 * mm, nameYOffset * mm)
 
         # Course name
 
         # styleOpenSans.fontName = 'OpenSans-BoldItalic'
-        styleOpenSans.fontSize = 17
-        styleOpenSans.leading = 10
+        styleRoboto.fontSize = 17
+        styleRoboto.leading = 10
         #styleOpenSans.textColor = colors.Color(
         #    0, 0.624, 0.886)
         styleOpenSans.textColor = colors.HexColor('#5d5e5e')
-        styleOpenSans.alignment = TA_LEFT
+        styleOpenSans.alignment = TA_CENTER
 
         paragraph_string = u"<b><i>{1}</i></b>".format(
             self.course, self.long_course.decode('utf-8'))
-        paragraph = Paragraph(paragraph_string, styleOpenSans)
+        paragraph = Paragraph(paragraph_string, styleRoboto)
         # paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 133.50 * mm, 82.80 * mm)
+        paragraph.drawOn(c, 0 * mm, 94.60 * mm)
 
         # Honor code
 

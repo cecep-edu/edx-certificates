@@ -4,3 +4,23 @@ Forma/ECC0101X/2015_T1:
   LONG_COURSE: Introducción a la plataforma formaX - edX
   LONG_ORG: Centro Educación Continua
 
+edX/DemoX_v3/Demo_Course_v3:
+  LONG_ORG: Sample Org v3
+  LONG_COURSE: Computer Science 101 with utf-8 char like à
+  VERSION: 3_dynamic
+  interstitial:
+    Pass: 'This person passed.'
+    Distinction: 'This person is a complete overachiever!'
+
+course-v1:edX+DemoX_v3+Demo_Course_v3:
+  LONG_ORG: Sample Org v3
+  LONG_COURSE: Computer Science 101 with utf-8 char like à
+  VERSION: 3_dynamic
+  interstitial:
+    Pass: 'This person passed.'
+    Distinction: 'This person is a complete overachiever!'
+
+SNAP/GSI401/2015_12:
+  ISSUED_DATE: Quito 31 de diciembre del 2015
+  LONG_COURSE: GESTIÓN DE LA SEGURIDAD DE LA INFORMACION - FASE II
+  LONG_ORG: Centro Educación Continua - IAEN
