@@ -15,7 +15,7 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from reportlab.lib.fonts import addMapping
-from reportlab.lib.pagesizes import A4, letter, landscape
+from reportlab.lib.pagesizes import A4, letter, landscape, portrait
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
@@ -25,6 +25,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from glob import glob
 from HTMLParser import HTMLParser
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.colors import HexColor
 
 
 import settings
@@ -409,7 +410,7 @@ class CertificateGen(object):
 
         # This file is overlaid on the template certificate
         overlay_pdf_buffer = StringIO.StringIO()
-        c = canvas.Canvas(overlay_pdf_buffer, pagesize=landscape(A4))
+        c = canvas.Canvas(overlay_pdf_buffer, pagesize=portrait(A4))
 
         # 0 0 - normal
         # 0 1 - italic
@@ -417,6 +418,9 @@ class CertificateGen(object):
         # 1 1 - italic and bold
         pdfmetrics.registerFont(TTFont('Roboto', './fonts/roboto/Roboto-Regular.ttf'))
         pdfmetrics.registerFont(TTFont('Roboto-Thin', './fonts/roboto/Roboto-Thin.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto-ThinItalic', './fonts/roboto/Roboto-ThinItalic.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto-Bold', './fonts/roboto/Roboto-Bold.ttf'))
+
         addMapping('Roboto', 0, 0, 'Roboto')
         addMapping('Roboto', 0, 1, 'Roboto')
         addMapping('Roboto', 1, 0, 'Roboto')
@@ -424,6 +428,14 @@ class CertificateGen(object):
         addMapping('Roboto-Thin', 0, 0, 'Roboto-Thin')
         addMapping('Roboto-Thin', 0, 1, 'Roboto-Thin')
         addMapping('Roboto-Thin', 1, 0, 'Roboto-Thin')
+
+        addMapping('Roboto-ThinItalic', 0, 0, 'Roboto-ThinItalic')
+        addMapping('Roboto-ThinItalic', 0, 1, 'Roboto-ThinItalic')
+        addMapping('Roboto-ThinItalic', 1, 0, 'Roboto-ThinItalic')
+
+        addMapping('Roboto-Bold', 0, 0, 'Roboto-Bold')
+        addMapping('Roboto-Bold', 0, 1, 'Roboto-Bold')
+        addMapping('Roboto-Bold', 1, 0, 'Roboto-Bold')
 
         addMapping('OpenSans-Light', 0, 0, 'OpenSans-Light')
         addMapping('OpenSans-Light', 0, 1, 'OpenSans-LightItalic')
@@ -439,6 +451,8 @@ class CertificateGen(object):
         styleOpenSansLight = ParagraphStyle(name="opensans-light", leading=10, fontName='OpenSans-Light')
         styleRoboto = ParagraphStyle(name="roboto", leading=10, fontName='Roboto')
         styleRobotoThin = ParagraphStyle(name="roboto-thin", leading=10, fontName='Roboto-Thin')
+        styeRobotoItalic = ParagraphStyle(name="roboto-thin-italic", leading=10, fontName='Roboto-ThinItalic')
+        styeRobotoBold = ParagraphStyle(name="roboto-bold", leading=10, fontName='Roboto-Bold')
 
         # Text is overlayed top to bottom
         #   * Issued date (top right corner)
@@ -448,8 +462,8 @@ class CertificateGen(object):
         #   * Course name
         #   * "a course of study.."
         #   * honor code url at the bottom
-        WIDTH = 297  # width in mm (A4)
-        HEIGHT = 210  # hight in mm (A4)
+        WIDTH = 210  # width in mm (A4)
+        HEIGHT = 297  # hight in mm (A4)
 
         LEFT_INDENT = 49  # mm from the left side to write the text
         RIGHT_INDENT = 49  # mm from the right side for the CERTIFICATE
@@ -468,33 +482,34 @@ class CertificateGen(object):
         # Right justified so we compute the width
         width = stringWidth(
             paragraph_string,
-            'Roboto-Thin',
-            19,
+            'Roboto-ThinItalic',
+            11,
         ) / mm
         paragraph = Paragraph("{0}".format(
-            paragraph_string), styleRobotoThin)
+            paragraph_string), styeRobotoItalic)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
         paragraph.drawOn(c, (WIDTH - RIGHT_INDENT - width) * mm, 163 * mm)
 
         # Issued ..
 
-        styleRobotoThin.fontSize = 12
-        styleRobotoThin.leading = 10
-        #styleOpenSansLight.textColor = colors.Color(0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_LEFT
+        styeRobotoItalic.fontSize = 12
+        styeRobotoItalic.leading = 10
+        styeRobotoItalic.textColor = colors.HexColor('#e12025')
+
+        styeRobotoItalic.alignment = TA_LEFT
 
         paragraph_string = "{0}".format(self.issued_date)
 
         # Right justified so we compute the width
         width = stringWidth(
             paragraph_string,
-            'Roboto-Thin',
-            20,
+            'Roboto-ThinItalic',
+            11,
         ) / mm
         paragraph = Paragraph("{0}".format(
-            paragraph_string), styleRobotoThin)
+            paragraph_string), styeRobotoItalic)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 214.30 * mm, 57 * mm)
+        paragraph.drawOn(c, 23.70 * mm, 202 * mm)
         
         #  Student name
 
@@ -502,15 +517,15 @@ class CertificateGen(object):
         # will fall back to Arial if there are
         # unusual characters
         #style = styleOpenSans
-        style = styleRoboto
+        style = styeRobotoBold
         style.leading = 10
-        width = stringWidth(student_name.decode('utf-8'), 'Roboto', 14) / mm
+        width = stringWidth(student_name.decode('utf-8'), 'Roboto-Bold', 22) / mm
         paragraph_string = "{0}".format(student_name)
 
         if self._use_unicode_font(student_name):
-            style = styleArial
-            style = styleMiso
-            width = stringWidth(student_name.decode('utf-8'), 'Roboto', 14) / mm
+            style = styeRobotoBold
+            style = styeRobotoBold
+            width = stringWidth(student_name.decode('utf-8'), 'Roboto-Bold', 22) / mm
             # There is no bold styling for Arial :(
             paragraph_string = "<b>{0}</b>".format(student_name)
 
@@ -518,47 +533,46 @@ class CertificateGen(object):
         # decrease the font size
         if width > 153:
             style.fontSize = 18
-            nameYOffset = 121.55
+            nameYOffset = 133.60
         else:
-            style.fontSize = 18
-            nameYOffset = 121.55
+            style.fontSize = 22
+            nameYOffset = 135.00
 
-        style.textColor = colors.HexColor('#000000')
+        style.textColor = colors.HexColor('#d11e1a')
         #style.textColor = colors.Color(
         #    0,0.128,.128 )
-        style.alignment = TA_CENTER
+        style.alignment = TA_LEFT
 
         paragraph = Paragraph(paragraph_string, style)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 0 * mm, nameYOffset * mm)
+        paragraph.drawOn(c, 24.50 * mm, nameYOffset * mm)
 
         # Course name
 
         # styleOpenSans.fontName = 'OpenSans-BoldItalic'
-        styleRoboto.fontSize = 17
-        styleRoboto.leading = 10
+        styeRobotoBold.fontSize = 22
+        styeRobotoBold.leading = 10
         #styleOpenSans.textColor = colors.Color(
         #    0, 0.624, 0.886)
-        styleOpenSans.textColor = colors.HexColor('#5d5e5e')
-        styleOpenSans.alignment = TA_CENTER
+        styeRobotoBold.textColor = colors.HexColor('#000000')
+        styeRobotoBold.alignment = TA_LEFT
 
         paragraph_string = u"<b><i>{1}</i></b>".format(
             self.course, self.long_course.decode('utf-8'))
-        paragraph = Paragraph(paragraph_string, styleRoboto)
+        paragraph = Paragraph(paragraph_string, styeRobotoBold)
         # paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 0 * mm, 94.60 * mm)
+        paragraph.drawOn(c, 23.40 * mm, 92.15 * mm)
 
         # Honor code
 
-        styleOpenSansLight.fontSize = 7
-        styleOpenSansLight.leading = 10
-        styleOpenSansLight.textColor = colors.Color(
-            0.302, 0.306, 0.318)
-        styleOpenSansLight.alignment = TA_CENTER
+        styeRobotoItalic.fontSize = 11
+        styeRobotoItalic.leading = 10
+        styeRobotoItalic.textColor = colors.HexColor('#b5b4b4')
+        styeRobotoItalic.alignment = TA_CENTER
 
         paragraph_string = "<br/>" \
-            "*La Autenticidad de este certificado puede ser verificado en " \
+            "Código de verificación " \
             "<a href='{verify_url}/{verify_path}/{verify_uuid}'>" \
             "{verify_url}/{verify_path}/{verify_uuid}</a>"
 
@@ -566,10 +580,10 @@ class CertificateGen(object):
             verify_url=settings.CERT_VERIFY_URL,
             verify_path=S3_VERIFY_PATH,
             verify_uuid=verify_uuid)
-        paragraph = Paragraph(paragraph_string, styleOpenSansLight)
+        paragraph = Paragraph(paragraph_string, styeRobotoItalic)
 
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 0 * mm, 8 * mm)
+        paragraph.drawOn(c, 0 * mm, 28.00 * mm)
 
         c.showPage()
         c.save()
@@ -582,7 +596,7 @@ class CertificateGen(object):
         # So that we don't have to open the template
         # several times, we open a blank pdf several times instead
         # (much faster)
-        final_certificate = copy.copy(BLANK_PDFS['landscape-A4']).getPage(0)
+        final_certificate = copy.copy(BLANK_PDFS['portrait-A4']).getPage(0)
         final_certificate.mergePage(self.template_pdf.getPage(0))
         final_certificate.mergePage(overlay.getPage(0))
 
