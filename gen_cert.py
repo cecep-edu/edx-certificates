@@ -543,7 +543,7 @@ class CertificateGen(object):
         #    0,0.128,.128 )
         style.alignment = TA_LEFT
 
-        paragraph = Paragraph(paragraph_string, style)
+        paragraph = Paragraph(paragraph_string.upper(), style)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
         paragraph.drawOn(c, 24.50 * mm, nameYOffset * mm)
 
