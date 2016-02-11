@@ -416,10 +416,10 @@ class CertificateGen(object):
         # 0 1 - italic
         # 1 0 - bold
         # 1 1 - italic and bold
-        pdfmetrics.registerFont(TTFont('Roboto', './fonts/roboto/Roboto-Regular.ttf'))
-        pdfmetrics.registerFont(TTFont('Roboto-Thin', './fonts/roboto/Roboto-Thin.ttf'))
-        pdfmetrics.registerFont(TTFont('Roboto-ThinItalic', './fonts/roboto/Roboto-ThinItalic.ttf'))
-        pdfmetrics.registerFont(TTFont('Roboto-Bold', './fonts/roboto/Roboto-Bold.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto', '/edx/app/certs/certificates/fonts/roboto/Roboto-Regular.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto-Thin', '/edx/app/certs/certificates/fonts/roboto/Roboto-Thin.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto-ThinItalic', '/edx/app/certs/certificates/fonts/roboto/Roboto-ThinItalic.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto-Bold', '/edx/app/certs/certificates/fonts/roboto/Roboto-Bold.ttf'))
 
         addMapping('Roboto', 0, 0, 'Roboto')
         addMapping('Roboto', 0, 1, 'Roboto')
