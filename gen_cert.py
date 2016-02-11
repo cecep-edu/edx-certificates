@@ -573,8 +573,8 @@ class CertificateGen(object):
 
         paragraph_string = "<br/>" \
             "Código de verificación " \
-            "<a href='{verify_url}/{verify_path}/{verify_uuid}'>" \
-            "{verify_url}/{verify_path}/{verify_uuid}</a>"
+            "<a href='{verify_url}/{verify_path}/{verify_uuid}/valid.html'>" \
+            "{verify_url}/{verify_path}/{verify_uuid}/valid.html</a>"
 
         paragraph_string = paragraph_string.format(
             verify_url=settings.CERT_VERIFY_URL,
