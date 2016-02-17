@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>UPEx - Validación de Certificado</title>
+    <title>FormaX - Validación de Certificado</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://material.formax.edu.ec/CEC-IAEN/Certificado.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -16,20 +16,20 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
-
+  <body background="https://material.formax.edu.ec/CEC-IAEN/images/fondo2.jpg" leftmargin="0" marginwidth="100%" background-repeat: no-repeat;>
+    <div class="Header"><a href="http://iaen.edu.ec"><img src="https://cec-iaen.formax.edu.ec/static/cec-iaen/images/header-logo.png" /></a></div>
     <div class="container">
-      <div class="row">
+    <div class="row">
+          <div class="col-md-12">
+            <br/><br/><br/>
+          </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
-          <a href="http://iaen.edu.ec"><img src="https://www.upex.edu.ec/mailings/logo_iaen-02.png" /></a>
+          <h1>Este es un certificado válido en FormaX para <span>{NAME}</span></h1>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <h1>Este es un certificado válido en UPEx para <span>{NAME}</span></h1>
-        </div>
-      </div>
-      <div class="row">
+    </div>
+    <div class="row">
         <div class="col-md-12">
           <dl>
             <dt>Nombre del estudiante:</dt>
@@ -37,8 +37,8 @@
             <dt>Identificador:</dt>
             <dd>{CERTIFICATE_ID}</dd>
             <dt>Curso</dt>
-            <dd>{COURSE}</dd>
-            <dd class="description">Un curso ofrecido por UPEx, una plataforma MOOC del {ORG}.</dd>
+            <dd>{COURSE} - {COURSE_LONG}</dd>
+            <dd class="description">Un curso ofrecido por el {ORG}, en su plataforma MOOC FormaX.</dd>
           </dl>
         </div>
       </div>
@@ -51,7 +51,6 @@
         </p>
         <a href="{SIG_URL}" class="download">Descargar esta firma GnuPG</a>
       </footer>
-
     </div>
   </body>
 </html>
