@@ -55,10 +55,10 @@ CERT_FILENAME = 'Certificate.pdf'
 # Specify these credentials before running the test suite
 # or ensure that your .boto file has write permission
 # to the bucket.
-CERT_AWS_ID = 'AKIAIXICH5AOJPE3BK5A'
-CERT_AWS_KEY = 'qdETwaKglkwG0a01p/775pp5JRoX/DIwMhWhXgvl'
+CERT_AWS_ID = 'AKIAJMWYNMSJC5227YIA'
+CERT_AWS_KEY = '+VJFTtKrORaSe1iFIM6lk9rwJCp6YIRUAhWx2MAi'
 # Update this with your bucket name
-CERT_BUCKET = 'certsupex'
+CERT_BUCKET = 'senescyt'
 CERT_WEB_ROOT = '/var/tmp'
 # when set to true this will copy the generated certificate
 # to the CERT_WEB_ROOT. This is not something you want to do
