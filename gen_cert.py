@@ -523,7 +523,7 @@ class CertificateGen(object):
             style.fontSize = 18
             nameYOffset = 121.55
 
-        style.textColor = colors.HexColor('#000000')
+        style.textColor = colors.HexColor('#d2191a')
         #style.textColor = colors.Color(
         #    0,0.128,.128 )
         style.alignment = TA_CENTER
@@ -533,7 +533,7 @@ class CertificateGen(object):
         paragraph.drawOn(c, 0 * mm, nameYOffset * mm)
 
         # Course name
-
+        style.textColor = colors.HexColor('#000000')
         # styleOpenSans.fontName = 'OpenSans-BoldItalic'
         styleRoboto.fontSize = 17
         styleRoboto.leading = 10
