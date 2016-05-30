@@ -415,8 +415,8 @@ class CertificateGen(object):
         # 0 1 - italic
         # 1 0 - bold
         # 1 1 - italic and bold
-        pdfmetrics.registerFont(TTFont('Roboto', './fonts/roboto/Roboto-Regular.ttf'))
-        pdfmetrics.registerFont(TTFont('Roboto-Thin', './fonts/roboto/Roboto-Thin.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto', '/edx/app/certs/certificates/fonts/roboto/Roboto-Regular.ttf'))
+        pdfmetrics.registerFont(TTFont('Roboto-Thin', '/edx/app/certs/certificates/fonts/roboto/Roboto-Thin.ttf'))
         addMapping('Roboto', 0, 0, 'Roboto')
         addMapping('Roboto', 0, 1, 'Roboto')
         addMapping('Roboto', 1, 0, 'Roboto')
@@ -559,7 +559,7 @@ class CertificateGen(object):
 
         paragraph_string = "<br/>" \
             "*La Autenticidad de este certificado puede ser verificado en " \
-            "<a href='{verify_url}/{verify_path}/{verify_uuid}'>" \
+            "<a href='{verify_url}/{verify_path}/{verify_uuid}/valid.html'>" \
             "{verify_url}/{verify_path}/{verify_uuid}</a>"
 
         paragraph_string = paragraph_string.format(
