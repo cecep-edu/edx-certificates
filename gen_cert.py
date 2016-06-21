@@ -509,7 +509,7 @@ class CertificateGen(object):
         paragraph = Paragraph("{0}".format(
             paragraph_string), styeRobotoItalic)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 23.70 * mm, 202 * mm)
+        paragraph.drawOn(c, 23.70 * mm, 250.50 * mm)
         
         #  Student name
 
@@ -533,10 +533,10 @@ class CertificateGen(object):
         # decrease the font size
         if width > 153:
             style.fontSize = 18
-            nameYOffset = 133.60
+            nameYOffset = 154.60
         else:
             style.fontSize = 22
-            nameYOffset = 135.00
+            nameYOffset = 154.60
 
         style.textColor = colors.HexColor('#d11e1a')
         #style.textColor = colors.Color(
@@ -550,7 +550,7 @@ class CertificateGen(object):
         # Course name
 
         # styleOpenSans.fontName = 'OpenSans-BoldItalic'
-        styeRobotoBold.fontSize = 22
+        styeRobotoBold.fontSize = 17
         styeRobotoBold.leading = 10
         #styleOpenSans.textColor = colors.Color(
         #    0, 0.624, 0.886)
@@ -562,7 +562,7 @@ class CertificateGen(object):
         paragraph = Paragraph(paragraph_string, styeRobotoBold)
         # paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
         paragraph.wrapOn(c, WIDTH * mm, HEIGHT * mm)
-        paragraph.drawOn(c, 23.40 * mm, 92.15 * mm)
+        paragraph.drawOn(c, 23.40 * mm, 115.15 * mm)
 
         # Honor code
 
